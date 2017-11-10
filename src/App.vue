@@ -2,23 +2,13 @@
   <div id="app">
     <h1>Shopping List</h1>
     <shopping-summary :summary="summary" @filter="onFilter" />
-
-    <div class="row add-new-item">
-      <div class="form">
-        <input type="text" class="row item-name" placeholder="New item need to shop" />
-        <div class="item-info">
-          <input type="text" class="row item-price" placeholder="Price" />
-          <input type="text" class="row item-quantity" placeholder="Quantity" />
-          <input type="text" class="row item-unit" placeholder="Unit" />
-        </div>
-      </div>
-      <button class="add-btn">Add Item</button>
-    </div>
+    <add-item @addItem="onAddItem" />
     <shopping-list :list="filteredItems" @toogle="onToogle" @delete="onDelete" />  
   </div>
 </template>
 
 <script>
+import AddItem from '@/components/AddItem'
 import ShoppingList from '@/components/ShoppingList'
 import ShoppingSummary from '@/components/ShoppingSummary'
 export default {
@@ -90,11 +80,18 @@ export default {
 
     onDelete (uid) {
       this.list = this.list.filter(item => item.uid !== uid)
+    },
+
+    onAddItem (item) {
+      const newItem = {...item, uid: this.currentUID + 1, completed: false}
+      this.list = [...this.list, newItem]
+      this.currentUID += 1
     }
   },
   components: {
     ShoppingList,
-    ShoppingSummary
+    ShoppingSummary,
+    AddItem
   }
 }
 </script>
@@ -149,115 +146,5 @@ h2 {
 	flex-direction: row;
 	align-items: center;
 	margin: 5px 0;
-}
-
-.add-new-item {
-	height: 80px;
-	display: flex;
-	flex-direction: row;
-}
-
-.add-new-item .form {
-	display: flex;
-	flex-direction: column;
-	flex: 1;
-	margin-left: 15px;
-}
-
-.add-new-item .form input {
-	font-size: 14px;
-	padding: 5px 10px;
-	outline: 0;
-}
-
-.add-new-item .form .item-name {
-	width: 300px;
-}
-
-.form .item-quantity, 
-.form .item-price,
-.form .item-unit
-{
-	width: 100px;
-	margin-right: 5px;
-}
-
-.add-new-item .add-btn {
-	padding: 5px 10px;
-	margin-right: 15px;
-}
-
-.add-new-item .form .item-info {
-	display: flex;
-	flex-direction: row;
-}
-
-.shopping-list li {
-	height: 80px;
-}
-
-.shopping-list li .icon {
-	margin: 0 10px;
-}
-
-.shopping-list li .toogle {
-	text-align: center;
-	width: 40px;
-	height: 40px;
-	border: none; /* Mobile Safari */
-	margin: 0 10px;
-	-webkit-appearance: none;
-	appearance: none;
-}
-
-.shopping-list li .toogle:focus {
-	outline: 0;
-}
-
-.shopping-list li .toogle:after {
-	content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#BDBDBD" stroke-width="3"/></svg>');
-}
-
-.shopping-list li .toogle:checked:after {
-	content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#bddad5" stroke-width="3"/><path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>');
-}
-
-.shopping-list li .info {
-	flex: 1;
-	line-height: 1.6em;
-}
-
-.shopping-list li .sub-info {
-	font-size: 16px;
-	display: flex;
-	flex-direction: row;
-	width: 230px;
-}
-
-.shopping-list li .quantity {
-	width: 140px;
-	display: inline-block;
-}
-
-.shopping-list li .sub-total {
-	font-size: 17px;
-	font-weight: 400;
-	margin-right: 15px;
-}
-
-.shopping-list li .delete {
-	width: 20px;
-	height: 23px;
-	background: none;
-	border: 0;
-	display: block;
-	font-size: 20px;
-	color: #424242;
-	cursor: pointer;
-	outline: 0;
-}
-
-.shopping-list li .delete:hover {
-	color: #af5b5e;
 }
 </style>
