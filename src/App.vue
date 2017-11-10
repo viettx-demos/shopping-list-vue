@@ -21,7 +21,7 @@
       </div>
       <button class="add-btn">Add Item</button>
     </div>
-    <shopping-list :list="list" />  
+    <shopping-list :list="list" @toogle="onToogle" @delete="onDelete" />  
   </div>
 </template>
 
@@ -59,6 +59,19 @@ export default {
       ],
       filter: 'all',
       currentUID: 3
+    }
+  },
+  methods: {
+    onToogle (uid) {
+      for (let item of this.list) {
+        if (item.uid === uid) {
+          item.completed = !item.completed
+          break
+        }
+      }
+    },
+    onDelete (uid) {
+      this.list = this.list.filter(item => item.uid !== uid)
     }
   },
   components: {

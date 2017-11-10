@@ -1,6 +1,12 @@
 <template>
   <ul>
-    <shopping-item v-for="item in list" :key="item.uid" :item="item" />
+    <shopping-item
+      v-for="item in list"
+      :key="item.uid"
+      :item="item"
+      @delete="$emit('delete', item.uid)"
+      @toogle="$emit('toogle', item.uid)"
+    />
   </ul>
 </template>
 

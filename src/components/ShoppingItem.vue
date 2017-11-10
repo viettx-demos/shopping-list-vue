@@ -1,6 +1,6 @@
 <template>
   <li class="row">
-    <input type="checkbox" class="toogle" />
+    <input type="checkbox" class="toogle" :checked="item.completed" v-on:change="$emit('toogle')" />
     <div class="info">
       <h2>{{item.title}}</h2>
       <div class="sub-info">
@@ -9,7 +9,7 @@
       </div>
     </div>
     <span class="sub-total">${{subTotal}}</span>
-    <a class="delete">x</a>
+    <a class="delete" @click="$emit('delete')">x</a>
   </li>
 </template>
 
