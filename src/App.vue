@@ -1,72 +1,69 @@
 <template>
   <div id="app">
     <h1>Shopping List</h1>
-      <div class="row shopping-summary">
-        <span class="item-left">3 items left</span>
-        <ul class="filters">
-          <li class="actived">All</li>
-          <li>Incomplete</li>
-        </ul>
-        <span class="total">Total: $2,065</span>
-      </div>
-
-      <div class="row add-new-item">
-        <div class="form">
-          <input type="text" class="row item-name" placeholder="New item need to shop" />
-          <div class="item-info">
-            <input type="text" class="row item-price" placeholder="Price" />
-            <input type="text" class="row item-quantity" placeholder="Quantity" />
-            <input type="text" class="row item-unit" placeholder="Unit" />
-          </div>
-        </div>
-        <button class="add-btn">Add Item</button>
-      </div>
-
-      <ul class="shopping-list">
-        <li class="row">
-          <input type="checkbox" class="toogle" />
-          <div class="info">
-            <h2>Iphone X</h2>
-            <div class="sub-info">
-              <span class="quantity">Quantity: 2</span>
-              <span>$1,000/device</span>
-            </div>
-          </div>
-          <span class="sub-total">$2,000</span>
-          <a class="delete">x</a>
-        </li>
-        <li class="row">
-          <input type="checkbox" class="toogle" />
-          <div class="info">
-            <h2>Apple</h2>
-            <div class="sub-info">
-              <span class="quantity">Quantity: 10</span>
-              <span>$5/kg</span>
-            </div>
-          </div>
-          <span class="sub-total">$50</span>
-          <a class="delete">x</a>
-        </li>
-        <li class="row">
-          <input type="checkbox" class="toogle" />
-          <div class="info">
-            <h2>Coca Cola</h2>
-            <div class="sub-info">
-              <span class="quantity">Quantity: 5</span>
-              <span>$3/bottle</span>
-            </div>
-          </div>
-          <span class="sub-total">$15</span>
-          <a class="delete">x</a>
-        </li>
+    <div class="row shopping-summary">
+      <span class="item-left">3 items left</span>
+      <ul class="filters">
+        <li class="actived">All</li>
+        <li>Incomplete</li>
       </ul>
+      <span class="total">Total: $2,065</span>
+    </div>
+
+    <div class="row add-new-item">
+      <div class="form">
+        <input type="text" class="row item-name" placeholder="New item need to shop" />
+        <div class="item-info">
+          <input type="text" class="row item-price" placeholder="Price" />
+          <input type="text" class="row item-quantity" placeholder="Quantity" />
+          <input type="text" class="row item-unit" placeholder="Unit" />
+        </div>
+      </div>
+      <button class="add-btn">Add Item</button>
+    </div>
+    <shopping-list :list="list" />  
   </div>
 </template>
 
 <script>
+import ShoppingList from '@/components/ShoppingList'
 export default {
   name: 'app',
-  components: {}
+  data () {
+    return {
+      list: [
+        {
+          uid: 1,
+          title: 'Iphone X',
+          price: 1000,
+          quantity: 2,
+          unit: 'device',
+          completed: false
+        },
+        {
+          uid: 2,
+          title: 'Apple',
+          price: 5,
+          quantity: 10,
+          unit: 'kg',
+          completed: false
+        },
+        {
+          uid: 3,
+          title: 'Coca-Cola',
+          price: 3,
+          quantity: 5,
+          unit: 'bottle',
+          completed: false
+        }
+      ],
+      filter: 'all',
+      currentUID: 3
+    }
+  },
+  components: {
+    ShoppingList
+  }
 }
 </script>
 
