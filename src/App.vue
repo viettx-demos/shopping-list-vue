@@ -1,14 +1,7 @@
 <template>
   <div id="app">
     <h1>Shopping List</h1>
-    <div class="row shopping-summary">
-      <span class="item-left">3 items left</span>
-      <ul class="filters">
-        <li class="actived">All</li>
-        <li>Incomplete</li>
-      </ul>
-      <span class="total">Total: $2,065</span>
-    </div>
+    <shopping-summary :summary="summary" @filter="onFilter" />
 
     <div class="row add-new-item">
       <div class="form">
@@ -21,12 +14,13 @@
       </div>
       <button class="add-btn">Add Item</button>
     </div>
-    <shopping-list :list="list" @toogle="onToogle" @delete="onDelete" />  
+    <shopping-list :list="filteredItems" @toogle="onToogle" @delete="onDelete" />  
   </div>
 </template>
 
 <script>
 import ShoppingList from '@/components/ShoppingList'
+import ShoppingSummary from '@/components/ShoppingSummary'
 export default {
   name: 'app',
   data () {
@@ -61,7 +55,30 @@ export default {
       currentUID: 3
     }
   },
+  computed: {
+    summary () {
+      const totalPrice = this.list.reduce((total, item) => total + item.quantity * item.price, 0)
+      const countItemsLeft = this.list.filter(item => !item.completed).length
+      const filter = this.filter
+
+      return {
+        totalPrice, countItemsLeft, filter
+      }
+    },
+
+    filteredItems () {
+      if (this.filter === 'all') {
+        return this.list
+      }
+
+      return this.list.filter(item => !item.completed)
+    }
+  },
   methods: {
+    onFilter (filter) {
+      this.filter = filter
+    },
+
     onToogle (uid) {
       for (let item of this.list) {
         if (item.uid === uid) {
@@ -70,12 +87,14 @@ export default {
         }
       }
     },
+
     onDelete (uid) {
       this.list = this.list.filter(item => item.uid !== uid)
     }
   },
   components: {
-    ShoppingList
+    ShoppingList,
+    ShoppingSummary
   }
 }
 </script>
@@ -130,43 +149,6 @@ h2 {
 	flex-direction: row;
 	align-items: center;
 	margin: 5px 0;
-}
-
-.shopping-summary {
-	height: 50px;
-	padding: 0 20px;
-	background-color: #757575;
-	color: #FAFAFA;
-	font-size: 14px;
-	font-weight: 400;
-}
-
-.filters {
-	flex: 2;
-}
-
-.filters li {
-	display: inline-block;
-	padding: 5px 10px;
-	border-radius: 10px;
-	margin: 0 5px;
-	cursor: pointer;
-	border: 1px solid transparent;
-}
-
-.filters li:hover, .filters li.actived {
-	border: 1px solid #E0E0E0;
-	/* background-color: #F5F5F5;
-	color: #616161; */
-}
-
-.shopping-summary .item-left {
-	flex: 1;
-}
-.shopping-summary .total {
-	width: 105px;
-	text-align: right;
-	font-size: 16px;
 }
 
 .add-new-item {
